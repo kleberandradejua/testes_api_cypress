@@ -1,0 +1,22 @@
+{
+  "name": "testes_api_cypress",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kleberandradejua/testes_api_cypress.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kleberandradejua/testes_api_cypress/issues"
+  },
+  "homepage": "https://github.com/kleberandradejua/testes_api_cypress#readme",
+  "description": "",
+  "devDependencies": {
+    "cypress": "^14.3.0"
+  }
+}
