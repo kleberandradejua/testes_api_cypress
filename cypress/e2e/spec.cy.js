@@ -79,4 +79,25 @@ describe("Acesso ao site Barriga React", () => {
       expect(res.body.error).to.be.equal("Já existe uma conta com esse nome!");
     });
   });
+  it("Inserir movimentação", () => {
+    cy.getContaByName("Conta para movimetacoes").then((contaId) => {
+      cy.request({
+        url: "/transacoes",
+        method: "POST",
+        headers: {
+          Authorization: `JWT ${token}`,
+        },
+        body: {
+          conta_id: contaId,
+          data_pagamento: "12/11/2019",
+          data_transacao: "12/11/2019",
+          descricao: "desc",
+          envolvido: "inter",
+          status: true,
+          tipo: "REC",
+          valor: "123",
+        },
+      });
+    });
+  });
 });
