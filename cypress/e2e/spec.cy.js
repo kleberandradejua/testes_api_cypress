@@ -79,8 +79,8 @@ describe("Acesso ao site Barriga React", () => {
       expect(res.body.error).to.be.equal("Já existe uma conta com esse nome!");
     });
   });
-  it("Inserir movimentação", () => {
-    cy.getContaByName("Conta para movimetacoes").then((contaId) => {
+  it.only("Inserir movimentação", () => {
+    cy.getContaByName("Conta para alterar").then((contaId) => {
       cy.request({
         url: "/transacoes",
         method: "POST",
@@ -89,8 +89,8 @@ describe("Acesso ao site Barriga React", () => {
         },
         body: {
           conta_id: contaId,
-          data_pagamento: "12/11/2019",
-          data_transacao: "12/11/2019",
+          data_pagamento: "12/11/2025",
+          data_transacao: "12/11/2025",
           descricao: "desc",
           envolvido: "inter",
           status: true,

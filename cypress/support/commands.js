@@ -39,6 +39,7 @@ Cypress.Commands.add("getContaByName", (name) => {
         nome: name,
       },
     }).then((res) => {
+      console.log(res)
       return res.body[0].id;
     });
   });
