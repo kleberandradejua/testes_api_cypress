@@ -1,6 +1,6 @@
 ///<reference types="cypress"/>
-
 import "../support/commands";
+import dayjs from "dayjs";
 
 describe("Acesso ao site Barriga React", () => {
   let token;
@@ -38,18 +38,9 @@ describe("Acesso ao site Barriga React", () => {
   });
 
   it("Alteração de contas", () => {
-    cy.request({
-      method: "GET",
-      url: "/contas",
-      headers: {
-        Authorization: `JWT ${token}`,
-      },
-      qs: {
-        nome: "Conta para alterar",
-      },
-    }).then((res) => {
+    cy.getContaByName("Conta para alterar").then((contaId) => {
       cy.request({
-        url: `https://barrigarest.wcaquino.me/contas/${res.body[0].id}`,
+        url: `/contas/${contaId}`,
         method: "PUT",
         headers: {
           Authorization: `JWT ${token}`,
@@ -79,7 +70,7 @@ describe("Acesso ao site Barriga React", () => {
       expect(res.body.error).to.be.equal("Já existe uma conta com esse nome!");
     });
   });
-  it.only("Inserir movimentação", () => {
+  it("Inserir movimentação", () => {
     cy.getContaByName("Conta para alterar").then((contaId) => {
       cy.request({
         url: "/transacoes",
@@ -89,15 +80,30 @@ describe("Acesso ao site Barriga React", () => {
         },
         body: {
           conta_id: contaId,
-          data_pagamento: "12/11/2025",
-          data_transacao: "12/11/2025",
+          data_pagamento: dayjs().add(1, "day").format("DD/MM/YYYY"),
+          data_transacao: dayjs().format("DD/MM/YYYY"),
           descricao: "desc",
           envolvido: "inter",
           status: true,
           tipo: "REC",
           valor: "123",
         },
+      }).as("response");
+    });
+    cy.get("@response").its("status").should("be.equal", 201);
+    cy.get("@response").its("body.id").should("exist");
+  });
+  it.only("Saldo", () => {
+    cy.request({
+      url: "/saldo",
+      method: "GET",
+      headers: { Authorization: `JWT ${token}` },
+    }).then((res) => {
+      let saldoConta = null;
+      res.body.forEach((c) => {
+        if (c.conta === "Conta para saldo") saldoConta = c.saldo;
       });
+      expect(saldoConta).to.be.equal("534.00");
     });
   });
 });
